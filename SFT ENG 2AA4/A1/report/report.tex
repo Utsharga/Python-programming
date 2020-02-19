@@ -1,0 +1,189 @@
+\documentclass[12pt]{article}
+
+\usepackage{graphicx}
+\usepackage{paralist}
+\usepackage{listings}
+\usepackage{booktabs}
+
+\oddsidemargin 0mm
+\evensidemargin 0mm
+\textwidth 160mm
+\textheight 200mm
+
+\pagestyle {plain}
+\pagenumbering{arabic}
+
+\newcounter{stepnum}
+
+\title{Assignment 1 Solution}
+\author{Utsharga Rozario, rozariou}
+\date{\today}
+
+\begin {document}
+
+\maketitle
+
+This report discusses testing of two Abstract Data Types, DateT and GPosT written for Assignment 1. The DateT ADT represents the date consisting of day, month and year while the GPosT ADT represents the global positioning system in terms of latitude and longitude. It also discusses testing of the partner's version of the program. The design restrictions for the assignment are critiqued and then various discussion questions related are answered. The program was written in Python programming language with the code for both my own program and my partners program given in the pages below.
+
+\section{Testing of the Original Program}
+
+Tests for the program was on the basis of normal, edge and large cases. The tests were done on each method, containing 5 test cases intermixed with normal, edge and large cases. If a test case passes a prompt is output that it passes that case, otherwise an output fail is output. Normal cases were done to check if it the program ran properly for normal scenarios. Edge cases were done at the maximum and minimum ends to check if problems occur at the extreme operating parameters.
+Large cases were done with high input values to check if the program can compute the large data without running into an error.
+
+~\newline\noindent Some assumptions were made about the program's behaviour for 
+cases that were not fully specified. Specifically, it was assumed that:
+\begin{itemize}
+	\item for the {\tt DateT ADT}, it follows the Gregorian calendar,
+	\item leap year occurs every four years (divisible by 4) and skips a leap year every 100 years to account for the time,
+	\item January 1st, year 1 (AD), is assumed to be the first year on the calendar and years before that are not accounted for,
+	\item the months have days according to the Gregorian calendar, and February has 29 days when it is a leap year,
+   \item for \texttt{add\_days} method in {\tt DateT ADT}, the number of days added are assumed to be input correctly as positive numbers.
+   \item for the {\tt GPosT ADT}, latitude and longitude are taken in terms of degrees with range - 90 to 90 degrees and -180 to 180 degrees respectively,
+	\item for \texttt{west\_of} method in {\tt GPosT ADT}, the current position is considered west of the parameter position if the longitude of the current position is less than the parameter position,
+	\item for \texttt{west\_of} method in {\tt GPosT ADT}, the current position is considered north of the parameter position if the latitude of the current position is greater than the parameter position,
+	\item for \texttt{equal} method in {\tt GPosT ADT}, if the distance is equal to 1 km, the parameter position is not equal to the current position,
+	\item for \texttt{move} method in {\tt pos\_adt.py}, the bearing and distance were assumed to be input correctly within range of 0 degrees from the north to 360 degrees, and positive for the distance.
+	\item for \texttt{arrival\_date} method in {\tt GPosT ADT}, the speed was assumed to be input as a positive number above 0
+	\item for \texttt{arrival\_date} method in {\tt GPosT ADT}, the assumed departure time was 12:00 am of the current date, hence if the time was less than one day, the current date was returned. Otherwise, the time (number of days) minus one day was added to the current date and then returned.
+\end{itemize}
+
+The Original Program passed all the tests.\\
+
+\section{Results of Testing Partner's Code}
+
+Partner's Code passed all test cases expect the test for \texttt{arrival\_date}. This error occurred due to an assumption I made while writing the program. My partner assumed that if the number of days were more than $0$ then the arrival date would be the number of days after the the current date. Hence his assumed departure date would be 11:59 pm of the current day.\\
+\\\texttt{currentPos} = GPosT(0.00, 0.00)\\
+\texttt{testArrivalDate} = $currentPos.arrival\_date$(GPosT(87.9467, 80.7486), DateT(1,2,2000), 9970.84535815507)\\
+\\\texttt{Expected arrival date:} 1,2,2000\\
+\texttt{Partner's arrival date:} 2,2,2000\\
+
+\section{Critique of Given Design Specification}
+
+\texttt{Advantages} of the design specification included the types chosen to represent some of the data, such as representing the date in day, month and year as integers instead of a string, preventing one from needing to parse a string as a integer when accessing the date data. Similarly, for the global positioning data, the longitude and latitude were in real numbers representing degrees, hence preventing one from needing to parse a string as a real number when accessing the positioning data. Most of the methods specified the return data type with it's appropriate metric units and formats, which minimised the chances of error raised through method calling.
+
+~\newline\noindent \texttt{Disadvantages} of the design specification include the ambiguity of the range of input. There is a lot of date format, e.g. the Gregorian calendar, the Chinese calendar, etc. As well as the global positioning in terms of degrees, degrees/min and degrees/min/sec. There was a lot of space for assumptions in terms of what the methods do.
+\\\\For example in \texttt{days\_between}, we can assume to include or exclude the current day and the parameter date, and in \texttt{arrival\_date}, we can assume the what time the departure was.
+
+\section{Answers to Questions}
+
+\begin{enumerate}[(a)]
+
+\item Possible state variables for \texttt{DateT ADT} could be a tuple of $day$, $month$ and $year$ in the format (day, month, year) or create a list of $day$, $month$ and $year$ in the order of [day, month, year].
+
+Possible sate variable for \texttt{GPosT ADT} could be a tuple of $phi$ (latitude) and $lamda$ (longitude) in the format (phi, lamda) or create a list of $phi$ and $lamda$ in the order of [phi, lamda].
+
+\end{enumerate}
+
+\begin{enumerate}[(b)]
+
+\item From the interface specified in the assignment, DateT ADT is immutable as it cannot be modified using methods. All the methods return a new DateT object and does not modify the current object.
+
+The GPosT ADT is mutable as it can be modified using methods from the ADT. The $move$ method modifies the phi and the lamda value to a new value. Hence, it is mutable.
+
+\end{enumerate}
+
+\begin{enumerate}[(c)]
+
+\item Using \texttt{pytest}, it is easier to build test cases for abstract data types. It provides many benefits such as automated tests that can be specific and tailored to the API. A big advantage with pytest is that it is easy to use and utilizes Python syntax. As a result, the test cases are expressive and readable. Designing code for unit testing is easier and tidier, as it requires you to split the modules into smaller components.
+
+\end{enumerate}
+
+\begin{enumerate}[(d)]
+
+\item An expensive example of an software engineering failure is Bank Heist of the Bangldesh Bank in 2016. According to Bangladesh Bank authorities, a printer is set up to automatically print read-outs of transactions made. The glitch in the system, interrupted the automatic printing process, so that is was only several days later that the transfer receipts were even discovered – giving the thieves plenty of time to cover their tracks. A total of \$ 81 million was stolen from the funds due to this software bug.\\
+
+A very recent example of an software engineering failure is a system failure in the British Airways. An IT glitch in the system caused it to fail resulting in more than 100 flights to be cancelled and more than 200 others to delayed.\\
+
+Software quality and high cost still a major challenge because:
+\begin{itemize}
+
+	\item a software product can almost never be bug free, especially for large scale projects and products,
+	\item problems appear throughout the use of the product, hence maintenance is required on a periodic basis,
+	\item human error in writing the code as well as understanding the requirement specification,
+	\item some errors/problems cannot be foreseen due new development in computation (i.e. using supercomputers to hack a system),
+	\item the rapid change of technology and design systems also pose as a major challenge due to software continually needing to be updated for the change.\\ 
+
+To address the challenge in the future, a standard of documentation needs to be established and certain metrics need to be created to have a uniform standard of code. Till then, software engineers and developers need to follow the best and optimized Rational Design Process, one which is focused on change and robustness. 
+
+\end{itemize}
+
+
+
+
+\end{enumerate}
+
+\begin{enumerate}[(e)]
+
+\item The Rational Design Process discussed in class is:\\\\
+1. Problem statement\\
+2. Development plan\\
+3. Requirements (SRS)\\
+4. Design Docs (MG) \& (MIS)\\
+5. Code\\
+6. V\&V Report\\
+7. Maintain
+
+~\newline\noindent It is necessary to fake this process because the resulting product can be understood, maintained, and reused. Maintainability and reusability are key components of software engineering.
+
+~\newline\noindent The advantages to faking this process are ease of redesign, ease of redevelopment, increased maintainability and reusability. Faking this ideal process is costly in the
+short term, but inexpensive in the long term.
+
+\end{enumerate}
+
+\begin{enumerate}[(f)]
+
+\item \texttt{Software correctness}: A software product is correct if satisfies its requirements specification. In theory, it can be hard to achieve due to imprecise, ambiguous, inconsistent, based on incorrect knowledge, or nonexistent but can be possible if the requirement specifications are formal.\\
+
+\texttt{Software Reliability}: A software product is reliable if it usually does what is intended to do. Reliability can be measured.\\
+
+\texttt{Software Robustness}: A software product is robust if it behaves reasonably even in unanticipated or exceptional situations. It accounts for cases unspecified in the requirements.\\
+
+A robust software product is correct but a correct software product does not need to be robust.
+Meanwhile, a software product can be reliable and incorrect.  
+
+\end{enumerate}
+
+\begin{enumerate}[(g)]
+
+\item Separation of concerns is the principle that different concerns should be isolated and considered separately.\\
+
+The motivation behind this principle is to reduce a complex problem into a set of smaller problems. Hence, enables smaller components to be tackled in parallel. This further allows the program to be easily debugged and modules to be switched out in case of error or update. Furthermore, because of this principle, we consider software systems from different view points and have the qualities seperately concerned.\\
+
+The principles behind Modularity and Separation of Concerns are related because both principles focus on breaking up large complex programs into smaller simple programs that communicate with each other. Separation of concerns encourages modularity hence in turn making the program maintainable, reusable, readable, and interchangeable as much as possible.
+
+\end{enumerate}
+
+\newpage
+
+\lstset{language=Python, basicstyle=\tiny, breaklines=true, showspaces=false,
+  showstringspaces=false, breakatwhitespace=true}
+%\lstset{language=C,linewidth=.94\textwidth,xleftmargin=1.1cm}
+
+\def\thesection{\Alph{section}}
+
+\section{Code for date\_adt.py}
+
+\noindent \lstinputlisting{../src/date_adt.py}
+
+\newpage
+
+\section{Code for pos\_adt.py}
+
+\noindent \lstinputlisting{../src/pos_adt.py}
+
+\newpage
+
+\section{Code for test\_driver.py}
+
+\noindent \lstinputlisting{../src/test_driver.py}
+
+\newpage
+
+\section{Code for Partner's date\_adt.py}
+
+\noindent \lstinputlisting{../partner/date_adt.py}
+
+\section{Code for Partner's pos\_adt.py}
+
+\noindent \lstinputlisting{../partner/pos_adt.py}
+\end {document}

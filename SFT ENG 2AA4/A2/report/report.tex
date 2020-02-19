@@ -1,0 +1,323 @@
+\documentclass[12pt]{article}
+
+\usepackage{graphicx}
+\usepackage{paralist}
+\usepackage{listings}
+\usepackage{booktabs}
+
+\oddsidemargin 0mm
+\evensidemargin 0mm
+\textwidth 160mm
+\textheight 200mm
+
+\pagestyle {plain}
+\pagenumbering{arabic}
+
+\newcounter{stepnum}
+
+\title{Assignment 2 Solution}
+\author{Your name here}
+\date{\today}
+
+\begin {document}
+
+\maketitle
+
+Brief This report is a write-up and analysis of the module interface specification (MIS) for Assignment 2. It discusses and critiques the intricate details of my code and partner’s based upon the test cases that I made. Furthermore, it repeats this analytical process for the MIS and discusses the restrictions, problems, and shortcomings with the MIS. In addition, potential solutions are documented. Finally, it answers questions outlined in the MIS. The program was written in Python programming language with the code for both my own program and my partners program given in the pages below.
+
+
+\section{Testing of the Original Program}
+Tests for the program was set up based on boundary cases and normal cases. Extreme cases were not considered as the assumed chemical reactions are deemed not to have extreme or egde cases. Pytest was used for testing the modules.\\
+
+Testing for TestSet:
+\begin{itemize}
+\item \texttt{test\_add}: Test for the method add in Set. This test adds two elements to the list, one of type integer and one of type string. Due to python having dynamic typing, both are accepted as a part of the set and added to it.
+\item \texttt{test\_rm}: Test for the method rm in Set. This test removes a member from a set and checks if it is still present. It also attempts to remove a member not present but runs into ValueError as expected.
+\item \texttt{test\_member}: Test for the method member in Set. This test checks for two members in the set, one present and one not present.
+\item \texttt{test\_size}: Test for the method size in Set. This test checks the size of the two sets: One a set that is a normal set with 5 elements and another which is an empty set of size 0.
+\item \texttt{test\_equals}: Test for the method equals in Set. This test checks equality for sets containing the same elements. And checks if a subset of the set is deemed equal to the set.
+\item \texttt{test\_\_eq\_\_}: Test for the method \texttt{\_\_eq\_\_} in Set. This test checks equality for sets containing the same elements. And checks if a subset of the set is deemed equal to the set.
+\item \texttt{test\_to\_seq}: Test for the method to\_seq in Set. This test checks that this function returns a sequence of elements in the set as a list. \\
+\end{itemize}
+
+Testing for TestMoleculeT:
+\begin{itemize}
+\item \texttt{test\_get\_elm}: Test the method get\_elm in MoleculeT. This test checks if it gets the right element from MoleculeT.
+\item \texttt{test\_get\_num}: Test the method get\_num in MoleculeT. This test checks if it gets the right number of atoms of an element from MoleculeT.
+\item \texttt{test\_equals}: Test the method equals in MoleculeT. This test checks that it is equal to a similar molecule, checks that it is not equal to a molecule with the same element but different number of atoms and, also checks that it is not equal to a molecule with same number of atoms but a different element.
+\item \texttt{test\_\_eq\_\_}: Test the method \texttt{\_\_eq\_\_} in MoleculeT. This test checks that it is equal to a similar molecule, checks that it is not equal to a molecule with the same element but different number of atoms and, also checks that it is not equal to a molecule with same number of atoms but a different element.
+\item \texttt{test\_num\_atoms}: Test the method num\_atoms  in MoleculeT. This test checks that it returns the correct number of atoms of the element in MoleculeT and returns 0 if the element is not present in the MoleculeT. 
+\item \texttt{test\_constit\_elms}: Test for the method constit\_elms in MoleculeT. This test checks if it returns a set of the element in the molecule. 
+\end{itemize}
+
+Testing for TestCompoundT:
+\begin{itemize}
+\item \texttt{test\_get\_molec\_set}: Test for the method get\_molec\_set in CompoundT. This test checks if the method returns the correct MolecSet for three compounds. These compounds consist of three, three and one molecule each as that was deemed by me the standard for compounds. 
+\item \texttt{test\_equals}: Test for the method equals in CompoundT. This test checks if the method is equal to the compounds that are identical but not equal to compounds that are slightly different in terms of the number of atoms of a certain element.
+\item \texttt{test\_\_eq\_\_}: Test for the method \_\_eq\_\_ in CompoundT. This test checks if the method is equal to the compounds that are identical but not equal to compounds that are slightly different in terms of the number of atoms of a certain element.
+\item \texttt{test\_num\_atoms}: Test for the method num\_atoms in CompoundT. This test checks if the number of atoms of a particular element are returned the same as in the Compound, and also 0 for the elements not in the compound. 
+\item \texttt{test\_constit\_elms}: Test for the method constit\_elms in CompoundT. This test checks if the method returns the current set of elements in the compound.\\
+\end{itemize}
+
+Testing for TestReactionT:
+\begin{itemize}
+\item \texttt{test\_get\_lhs}: Test of the method get\_lhs in ReactionT. This test checks if the correct sequence of compounds on the left-hand side are returned. 
+\item \texttt{test\_get\_rhs}: Test of the method get\_rhs in ReactionT. This test checks if the correct sequence of compounds on the right-hand side are returned. 
+\item \texttt{test\_get\_lhs\_coeff}: Test for the method get\_lhs\_coeff in ReactionT. This test checks if the correct sequence of the coefficient of the left-hand side is returned. The coefficients are returned in natural/ whole numbers as per the guidelines of chemistry. 
+\item \texttt{test\_get\_rhs\_coeff}: Test for the method get\_rhs\_coeff in ReactionT. This test checks if the correct sequence of the coefficient of the right-hand side is returned. The coefficients are returned in natural/ whole numbers as per the guidelines of chemistry.
+\end{itemize}
+
+~\newline\noindent Passed Cases: 21\\
+Failed Cases: 0\\
+Total Cases: 21\\
+
+
+
+\section{Results of Testing Partner's Code}
+
+Testing for TestSet:
+\begin{itemize}
+\item \texttt{test\_add}: Passed
+\item \texttt{test\_rm}: Passed
+\item \texttt{test\_member}: Passed 
+\item \texttt{test\_size}: Passed
+\item \texttt{test\_equals}: Passed 
+\item \texttt{test\_\_eq\_\_}: Passed 
+\item \texttt{test\_to\_seq}: Passed\\
+\end{itemize}
+
+Testing for TestMoleculeT:
+\begin{itemize}
+\item \texttt{test\_get\_elm}: Passed
+\item \texttt{test\_get\_num}: Passed
+\item \texttt{test\_equals}: Passed
+\item \texttt{test\_\_eq\_\_}: Failed
+\item \texttt{test\_num\_atoms}: Passed
+\item \texttt{test\_constit\_elms}: Passed\\
+\end{itemize}
+
+Testing for TestCompoundT:
+\begin{itemize}
+\item \texttt{test\_get\_molec\_set}: Passed
+\item \texttt{test\_equals}: Passed
+\item \texttt{test\_\_eq\_\_}: Passed 
+\item \texttt{test\_num\_atoms}: Passed
+\item \texttt{test\_constit\_elms}: Passed\\
+\end{itemize}
+
+Testing for TestReactionT:
+\begin{itemize}
+\item \texttt{test\_get\_lhs}: Passed
+\item \texttt{test\_get\_rhs}: Passed
+\item \texttt{test\_get\_lhs\_coeff}: Failed
+\item \texttt{test\_get\_rhs\_coeff}: Failed
+\end{itemize}
+
+~\newline\noindent Passed Cases: 18\\
+Failed Cases: 3\\
+Total Cases: 21
+
+~\newline\noindent  My partener's code failed in \texttt{test\_\_eq\_\_} in TestMoleculeT, \texttt{test\_get\_lhs\_coeff} and\\ \texttt{test\_get\_rhs\_coeff} in test.\\
+
+My partner had forgotten to include \_\_eq\_\_ in the MoleculeT.py, however, it might be the case that in my code I had \_\_eq\_\_ as an abstract method in Equality.py and he had implemented in some other way.\\
+
+On the otherhand, my code returned the coefficients in natural numbers while my partner's code returned the coefficients in real numbers. Even though the ration of the coefficients were right my testing methods were not made to handle that.
+
+~\newline\noindent \texttt{Modification to test\_All.py}: In my testing I had accidentally accessed the list in the sets, which was suppose to be unaccessible. I modified it to accomodate my partner's code.
+
+\newpage
+
+\section{Critique of Given Design Specification}
+
+~\newline\indent The design specification for this assignment was in formal specification. The advantage of using a formal specification for a MIS is that it was very easy to understand the software requirements and design. This is what I liked about the design specification of assignment 2; and formal specification as a whole. An advantage of formal specification is that it leaves very little room for assumptions and hence the types of arguments and return variable were clearly defined. This also enabled encapsulation and inheritance of different classes. The specification emphasized and encouraged modularization and separation of concerns. This as a whole was very valuable as the code became minimal and ran with efficiency. Low couplling present in all classes as they utilized methods which they either inheritated or used through calling it. I believe due to information hiding there was a not a lot of opacity. I believe the program is general due to it being very specific from it's specification.\\
+
+The disadvantages to assignment 2's design specification is that it is hard to understand without proper knowledge of the mathematical symbols and definition of terms. Furthermore, due to the classes only being described using formal language, it was hard to understand what was happening within the module. Potential edge cases could not be determined as the specification was very strict with it’s typing and how a Reaction would be build up.\\
+
+The design specification could be improved by providing a natural language description along with the formal specification. This would enable the programmer to both get the software requirements and design without the ambiguity and with the understanding that natural language provides. A stricter return type on the coefficients of the compounds should be imposed as I believe, both my partners and my own code would fail tests due to the typing of the elements in the coefficient list. \\
+
+I learned a lot from this assignment, starting from creating classes to understanding the terms required for writing software and the reasons it is necessary. I would have liked to have a proper example of edge, boundary and normal cases for the reaction. Overall, the formal specification has been proven to be better than natural language.\\
+
+\newpage
+
+\section{Answers}
+
+\begin{enumerate}[a)]
+
+\item The advantages of the natural language approach are the simplicity in understanding the specification when natural language is used. As we communicate in natural language in our everyday lives, we are used to understanding and performing the task as told when directions are given in natural language. The disadvantages of natural language is that the use of natural languages to deal with complex problems can have issues with ambiguity, inaccuracy, and inconsistency. Since there is more than one way of interpretation when it comes to describing something in natural language, there is ambiguity as it cannot be resolved according to a rule or process with a finite number of steps. The advantages of a formal specification is that the development of a formal specification provides insights and understanding of software requirements and design. Another advantage is that it’s more complete than natural language, as the formality tends to highlight any incompleteness within the specification. The disadvantages of it are that some programmers, users, and clients may not have the technical background needed to understand the formal specification.
+
+\item The process of converting the strings to logical syntactic components called parsing.\\
+A single module called parsing could be used but keeping close to pep8 format, modularization of the code would be better.\\
+
+Create a class called parser, it would contain private methods to convert a string of chemical reaction to a logical syntactic component.\\
+
+\texttt{Method parseEquation()}\\
+Details: Create two private arrays for left hand side (lhs) and right-hand side(rhs). Split the string with the delimiter “+” using a while loop and store them in lhs until “=” is found. We then exit the loop and enter another loop that starts splitting after the “=” sign with the delimiter “+”. The lhs and rhs are complete with the corresponding strings. \\
+
+\texttt{Method parseTerm()}\\
+Details: Create two list of lists/ 2D array for left hand side Compound and right-hand side compounds. If there is a white space ignore that and go to next element in the string, if the element is a capital letter start counting the position and count till it either hits a number or another capital letter or while space. Store the letter in the first array list. If the Chemical Element string is followed by a number store the number as a string or if followed by a capital letter store “1” then move on to finding the rest of the elements. \\
+
+\texttt{Method parseElement()}\\
+Details: Now that we have separated the elements and their number of atoms from the string, we start converting it to our format. Cross-check each element in the list of lists/ 2D array and store the corresponding ElementT value. Change each number to an integer.\\
+
+\texttt{Method parseReaction()}\\
+Details: Create MolecSets respective to the number of lists in the list of lists. Now, read the list of lists/ 2D array, and make them into a Molecule by taking the Element and the following number. Store them in the Molecule Set. One list in the list of lists is a compound. A MolecSet corresponds to a compound. Make the MolecSet into a compound and store it in a new array called LHS or RHS. And the ReactionT is set for making.\\
+
+\texttt{Reference}: https://www.nayuki.io/res/chemical-equation-balancer-javascript/chemical-equation-balancer.ts
+
+\item First, we would modify Chemtypes by changing what values ElementT contains.
+\begin{tabbing}
+class \= ElementT(Enum):\\
+         \> H = (1, 1.008) \\
+		  \> He = (2, 4.003)\\
+		  \> Li = (3, 6.942)\\
+		  \> . \\
+		  \> . \\
+		  \> Og = (118, 294) \\
+
+	\> def \_\_init\_\_ \= (self, atomic\_num, molar\_mass): \+ \\
+	\> self.num = atomic\_num\\
+	\> self.mass = molar\_mass \- \\
+
+	\> def \= mass(self): \+ \\
+	\> return self.mass\\
+\end{tabbing}
+
+In the class Chemical Entity, I would include another abstract method called get\_molar\_mass().
+This method would take in ElementT, used ElementT.H.mass to get the molar mass and return it as a real number.
+For MoleculeT, it would get the molar mass using the element and multiply the number it with the number of atoms in the molecule. Hence getting the mass.
+For CompoundT, it would iterate though each molecule and use the function get\_molar\_mass of the molecule to get the mass of each molecule, have a variable which adds and stores the molar mass of each molecule and then when the iteration ends returns it.
+
+\item The usual convention in chemistry is to have natural numbers as coefficients of the chemical equations. I actually implemented an algorithm to have natural number coefficients. \\
+The algorithm finds the greatest common divisor (gcd) of the coefficients and then multiplies the inverse of the gcd to the coefficients. The algorithm finds the gcd by calling a function called find\_gcd which takes in two parameters and, finds the gcd of it. This function iteratively called and used to find the gcd of all the entire list of coefficients and then returns it.
+
+
+\begin{tabbing}
+		num1 = coeff[0][0]\\
+		num2 = coeff[0][1]\\
+       gcd = self.\_\_find\_gcd(num1, num2)\\
+       for \= i in range(len(coeff)):\\
+            \> for \= j in range(len(coeff[0])):\+ \\
+               \>  gcd = self.\_\_find\_gcd(gcd, coeff[i][j])\\
+        coeff = (1 / gcd) * coeff \- \\ \\
+
+		def \= \_\_find\_gcd(self, x, y):\\
+        \> while(y): \= \+ \\
+            \> x, y = y, x \% y\\
+        	  return x\\
+\end{tabbing}
+
+\item The difference between dynamic and static typing is that in dynamic typing (in a language like Python), variables must necessarily be defined before they are used. In static typing (in a language like Java), variables do not need to be defined before they’re used as the variables are explicitly declared before they’re used in the program. The advantages of static typing include that the IDE will easily catch many programming errors quickly when the program is executed, which will help to reduce the time spent on debugging the program. Another advantage is that the type declarations serve as automatically checked documentation, which make it easier for the programmer to understand and maintain the program. The disadvantages are that sometimes the type checker (for Java in this case) would sometimes prevent a program from running when it is suppose to run without error.\\
+
+\texttt{Reference}: https://www.sitepoint.com/typing-versus-dynamic-typing/
+
+\item $[$ (x, y) for x in range(1, 10) for y in range(1, 10) if (x \% 2 == 1) and  (y \% 2 == 1) and (x $<$ y) $]$
+  
+\item \begin{tabbing}
+def \= length(listA):\\
+	\> return sum(list(map(lambda x : 1, listA)))
+\end{tabbing}
+
+\item As stated in the lectures, the software interface enables the module’s clients to use the service a module provides. The implementation of the interface that provides the services offered by the module. Meaning the interface is what the end user will be seeing and working with and the implementation is what the module provides for the interface to function.
+
+\item
+\begin{enumerate}[i.]
+\item Abstraction: Abstraction is the process of focusing on what is important while ignoring what is irrelevant. Using the principle of abstraction, we can manage the complexity of the interface to emphasize essential characteristics and supress the implementation details. Another way to design using this principle involves separating the behaviour of software components from their implementation, as there will be unnecessary coupling if this is not followed.
+\item Anticipation of change: Anticipation of change is the principle that future change should be anticipated and planned for. The three techniques we can use to deal with change for the design of a module’s interface is configuration management, information hiding, and little languages. We can manage the configuration of the module consistently so that it can be easily modified as the software evolves. We can hide the things that are likely to change inside of the module, as well as create little languages that can be used to solve similar problems.
+\item Generality: The principle of generality is closely related to the principle of anticipation of change. It is important in designing software that is free from unnatural restrictions and limitations. Hence to solve a more general problem than the problem at hand whenever possible. One excellent example of an unnatural restriction or limitation is the use of two digit year numbers, which has led to the "year 2000" problem: software that will garble record keeping at the turn of the century. Although the two-digit limitation appeared reasonable at the time, good software frequently survives beyond its expected lifetime.
+\item Modularity: The principle of modularity is a specialization of the principle of separation of concerns. We can enable modularity for the design of a module’s interface by considering different parts of the system separately and that the parts of the system to be considered separately from their composition. This can be done either by using modular decomposition or modular composition.
+\item Separation of Concerns: Separation of concerns is the principle that different concerns should be isolated and considered separatelt. The goal is to reduce complex problems to a set of simpler problems and hence enables parallelization of effort.\\
+\end{enumerate}
+
+\texttt{Reference}:\\
+1) https://www.d.umn.edu/~gshute/softeng/principles.html\\
+2) Leture slides
+
+
+
+\end{enumerate}
+
+\newpage
+
+\lstset{language=Python, basicstyle=\tiny, breaklines=true, showspaces=false,
+  showstringspaces=false, breakatwhitespace=true}
+%\lstset{language=C,linewidth=.94\textwidth,xleftmargin=1.1cm}
+
+\def\thesection{\Alph{section}}
+
+\section{Code for ChemTypes.py}
+
+\noindent \lstinputlisting{../src/ChemTypes.py}
+
+\newpage
+
+\section{Code for ChemEntity.py}
+
+\noindent \lstinputlisting{../src/ChemEntity.py}
+
+\newpage
+
+\section{Code for Equality.py}
+
+\noindent \lstinputlisting{../src/Equality.py}
+
+\newpage
+
+\section{Code for Set.py}
+
+\noindent \lstinputlisting{../src/Set.py}
+
+\newpage
+
+\section{Code for ElmSet.py}
+
+\noindent \lstinputlisting{../src/ElmSet.py}
+
+\newpage
+
+\section{Code for MolecSet.py}
+
+\noindent \lstinputlisting{../src/MolecSet.py}
+
+\newpage
+
+\section{Code for CompoundT.py}
+
+\noindent \lstinputlisting{../src/CompoundT.py}
+
+\newpage
+
+\section{Code for ReactionT.py}
+
+\noindent \lstinputlisting{../src/ReactionT.py}
+
+\newpage
+
+\section{Code for test\_All.py}
+
+\noindent \lstinputlisting{../src/test_All.py}
+
+\newpage
+
+\section{Code for Partner's Set.py}
+
+\noindent \lstinputlisting{../partner/Set.py}
+
+\newpage
+
+\section{Code for Partner's MoleculeT.py}
+
+\noindent \lstinputlisting{../partner/MoleculeT.py}
+
+\newpage
+
+\section{Code for Partner's CompoundT.py}
+
+\noindent \lstinputlisting{../partner/CompoundT.py}
+
+\newpage
+
+\section{Code for Partner's ReactionT.py}
+
+\noindent \lstinputlisting{../partner/ReactionT.py}
+
+\end {document}
